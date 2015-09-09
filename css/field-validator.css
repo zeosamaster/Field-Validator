@@ -1,0 +1,8 @@
+.error-input-highlight {
+	border: 2px red solid;
+}
+
+.error-field-highlight {
+	color: black;
+	text-shadow: none;
+}

@@ -1,0 +1,66 @@
+<html>
+
+<head>
+
+	<title>Alertify</title>
+
+	<!-- JavaScript -->
+	<script src="js/vendor/jquery-1.11.3.min.js"></script>
+	<script src="js/vendor/jquery-ui.min.js"></script>
+	<script src="js/vendor/alertify.min.js"></script>
+
+	<script src="js/field-validator.js"></script>
+
+	<!-- CSS -->
+	<link rel="stylesheet" href="css/vendor/bootstrap.min.css" />
+	<link rel="stylesheet" href="css/vendor/bootstrap-responsive.min.css" />
+	<link rel="stylesheet" href="css/vendor/alertify.min.css" />
+	<link rel="stylesheet" href="css/vendor/themes/default.min.css" />
+	<link rel="stylesheet" href="css/vendor/themes/semantic.min.css" />
+	<link rel="stylesheet" href="css/vendor/themes/bootstrap.min.css" />
+	<link rel="stylesheet" href="css/vendor/jquery-ui.min.css" />
+	<link rel="stylesheet" href="css/vendor/jquery-ui.structure.min.css" />
+	<link rel="stylesheet" href="css/vendor/jquery-ui.theme.min.css" />
+
+	<link rel="stylesheet" href="css/field-validator.css" />
+
+</head>
+
+<body>
+	<div class="container" data-field-validations data-field-min-length="24234">
+
+		<div class="page-header">
+			<h1>Hello</h1>
+		</div>
+
+		<div class="row">
+			<label for="input1">Integer</label>
+			<input id="input1" data-field-validations="integer" />
+		</div>
+		<div class="row">
+			<label for="input2">Text</label>
+			<input id="input2" data-field-validations="text" />
+		</div>
+		<div class="row">
+			<label for="input3">Decimal</label>
+			<input id="input3" data-field-validations="decimal" />
+		</div>
+		<div class="row">
+			<label for="input4">Email</label>
+			<input id="input4" data-field-validations="email" />
+		</div>
+		<div class="row">
+			<label for="input5">Password</label>
+			<input id="input5" data-field-validations="password" data-field-min-length="4" data-field-max-length="16" />
+		</div>
+
+		<div class="row">
+			<div class="btn-group" style="margin-top:20px;">
+				<button type="button" onclick="validator.validate();" class="btn btn-default">Validate</button>
+			</div>
+		</div>
+	</div>
+
+</body>
+
+</html>
