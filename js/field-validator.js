@@ -98,7 +98,7 @@
 				var message = "";
 
 				if (names.custom_message_attr && elem.attr(names.custom_message_attr)) {
-					message = elem.attr(names.custom_message_attr);
+					return;
 
 				} else if (messages.length > 1) {
 					message = "<span>O campo";
@@ -281,7 +281,10 @@
 					items: ".error-input-highlight",
 					tooltip_class: names.tooltip_class,
 					content: function () {
-						return $(this).attr("data-tooltip-html");
+						return $(this).attr(names.custom_message_attr) || $(this).attr("data-tooltip-html");
+					},
+					position: {
+						my: options.tooltip.position || "right-20px"
 					}
 				});
 			}
