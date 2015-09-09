@@ -1,8 +1,11 @@
-.error-input-highlight {
+.has-tooltip {
 	border: 2px red solid;
 }
 
-.error-field-highlight {
-	color: black;
-	text-shadow: none;
+.validation-errors-alertify > * {
+	text-align: left;
+}
+
+.row {
+	margin-top: 10px;
 }

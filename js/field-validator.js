@@ -13,23 +13,37 @@
 			validator = {},
 			validations = {},
 			$container,
+			options = {},
 
-			// attribute names
-			names = {
-				// tooltips
-				tooltip_class: "error-input-tooltip",
-				tooltip_added_handler: "tooltip-added"
+			// default options
+			default_options = {
+				container: $("body"),
+				delegate_validations: true,
+				validate_on_change: true,
+				after_validation_callback: undefined,
+				tooltip: {
+					tooltip_class: "",
+					custom_message_attr: "",
+					add_handler: undefined,
+					remove_handler: undefined,
+					position: {
+						my: "right-20px"
+					}
+				},
+				alertify: {
+					error_delay: 10,
+					warning_delay: 5,
+					max_messages: 5,
+					error_class: "alertify-error",
+					message_class: "alertify-message"
+				}
 			},
 
 			// callbacks
 			after_validation_callback,
 
 			// alertify
-			alertify_defaults = {
-				error_delay: 10,
-				warning_delay: 5
-			},
-			$alertify = alertify;
+			$alertify = $.extend({}, alertify);
 
 		/*********************/
 		/* private functions */
@@ -37,14 +51,42 @@
 
 		// alertify functions
 
-		function alertify_message(message, delay) {
-			delay = delay || alertify_defaults.warning_delay;
-			$alertify.message(message, delay);
+		function alertify_message(message, add_class, delay) {
+			delay = delay || options.alertify.warning_delay;
+			add_class = add_class || options.alertify.message_class;
+
+			var instance = $alertify.message(message, delay);
+			if (add_class && instance.element) {
+				$(instance.element).addClass(add_class);
+			}
+			return instance;
 		}
 
-		function alertify_error(error, delay) {
-			delay = delay || alertify_defaults.error_delay;
-			$alertify.message(error, delay);
+		function alertify_error(error, add_class, delay) {
+			delay = delay || options.alertify.error_delay;
+			add_class = add_class || options.alertify.error_class;
+
+			var instance = $alertify.error(error, delay);
+			if (add_class && instance.element) {
+				$(instance.element).addClass(add_class);
+			}
+			return instance;
+		}
+
+		function showAlertifyErrors(error, add_class, delay) {
+			var instance = $alertify.validation_errors_instance;
+			if (instance) {
+				instance
+					.delay(options.alertify.error_delay)
+					.setContent(error);
+			} else {
+				instance = alertify_error(error, add_class, delay);
+				instance.callback = function () {
+					delete $alertify.validation_errors_instance;
+					return true;
+				};
+				$alertify.validation_errors_instance = instance;
+			}
 		}
 
 		// utils
@@ -82,7 +124,7 @@
 
 		// validation error handling
 
-		function processMessages(elem, messages) {
+		function replaceMessagePlaceholders(elem, messages) {
 			var options = getElemFieldAttrs(elem),
 				i;
 			for (i = 0; i < messages.length; i += 1) {
@@ -93,11 +135,11 @@
 			});
 		}
 
-		function handleElemErrors(elem, messages) {
+		function handleTooltipErrors(elem, messages) {
 			if (messages.length) {
 				var message = "";
 
-				if (names.custom_message_attr && elem.attr(names.custom_message_attr)) {
+				if (options.tooltip.custom_message_attr && elem.attr(options.tooltip.custom_message_attr)) {
 					return;
 
 				} else if (messages.length > 1) {
@@ -113,25 +155,57 @@
 				}
 
 				elem.attr("data-tooltip-html", message)
-					.addClass("error-input-highlight")
-					.trigger(names.tooltip_added_handler + ".field-validator");
+					.addClass("has-tooltip")
+					.trigger("tooltip-added.field-validator");
 
 			} else {
 				elem.removeAttr("data-tooltip-html")
-					.removeClass("error-input-highlight")
+					.removeClass("has-tooltip")
 					.trigger("tooltip-removed.field-validator");
 			}
+		}
+
+		function handleAlertifyErrors(messages) {
+			var alertify_html = "";
+			messages.slice(0, options.alertify.max_messages).forEach(function (message) {
+				alertify_html +=
+					"<p>" +
+					"<b>" + message.label + "</b>" + ": " +
+					message.message +
+					"</p>";
+			});
+			if (messages.length > options.alertify.max_messages) {
+				alertify_html += "<p><b>...</b></p>";
+			}
+			return alertify_html;
 		}
 
 		/********************/
 		/* public functions */
 		/********************/
 
-		validator.validate = function (elems) {
-			var valid = true;
+		validator.fullValidate = function () {
+			var outputs = [],
+				alertify_html;
 
-			elems = (elems && elems.length ? elems : $('[data-field-validations]', $container));
-			elems.each(function (i, el) {
+			$('[data-field-validations]', $container).each(function () {
+				outputs = outputs.concat(validator.validate($(this)));
+			});
+
+			if (outputs.length) {
+				alertify_html = handleAlertifyErrors(outputs);
+				showAlertifyErrors(alertify_html, "validation-errors-alertify");
+			} else {
+				$alertify.success("Validations successfull");
+			}
+		};
+
+		validator.validate = function (elems) {
+			var $elems = $(elems),
+				valid = true,
+				validation_output = [];
+
+			$elems.each(function (i, el) {
 				var $elem = $(el),
 					label = $elem.attr("data-field-label"),
 					types = [],
@@ -174,19 +248,27 @@
 					}
 				});
 
-				// handle validation errors
-				messages = processMessages($elem, messages);
-				handleElemErrors($elem, messages);
+				messages = replaceMessagePlaceholders($elem, messages);
+				handleTooltipErrors($elem, messages);
+
+				messages.forEach(function (message) {
+					validation_output.push({
+						label: label,
+						message: message
+					});
+				});
 
 				valid = valid && $valid;
 			});
 
 			if (typeof (after_validation_callback) === "function") {
-				after_validation_callback(valid, elems);
+				after_validation_callback(valid, $elems);
 			}
+
+			return validation_output;
 		};
 
-		validator.setup = function (options) {
+		validator.setup = function (setup_options) {
 			// load validation rules and messages
 			$.getScript("js/validations-config.js", function (data) {
 				validations = window.validations;
@@ -195,17 +277,19 @@
 			});
 
 			// remove handlers from previous container
-			if ($container && $container.length) {
-				$container
-					.off(".field-validator")
-					.tooltip("destroy");
+			if ($container) {
+				$container.off(".field-validator");
+				if ($container.data('ui-tooltip')) {
+					$container.tooltip("destroy");
+				}
 			}
+
+			// fill empty options with default
+			options = $.extend({}, setup_options, default_options);
 
 			// set container
 			if (options.container) {
 				$container = $(options.container);
-			} else {
-				$container = ($container.length ? $container : $("body"));
 			}
 
 			// delegate parent validations to children
@@ -261,9 +345,10 @@
 			}
 
 			// add change handler
-			if (options.on_change) {
+			if (options.validate_on_change) {
 				$container.on("change.field-validator", '[data-field-validations]', function () {
 					validator.validate($(this));
+					$alertify.validation_errors_instance.dismiss();
 				});
 			}
 
@@ -274,18 +359,13 @@
 
 			// initialize tooltip
 			if (options.tooltip) {
-				names.tooltip_class = options.tooltip.tooltip_class || names.tooltip_class;
-				names.custom_message_attr = options.tooltip.custom_message_attr || names.custom_message_attr;
-
 				$container.tooltip({
-					items: ".error-input-highlight",
-					tooltip_class: names.tooltip_class,
+					items: ".has-tooltip",
+					tooltip_class: options.tooltip.tooltip_class,
 					content: function () {
-						return $(this).attr(names.custom_message_attr) || $(this).attr("data-tooltip-html");
+						return $(this).attr(options.tooltip.custom_message_attr) || $(this).attr("data-tooltip-html");
 					},
-					position: {
-						my: options.tooltip.position || "right-20px"
-					}
+					position: options.tooltip.position
 				});
 			}
 		};
