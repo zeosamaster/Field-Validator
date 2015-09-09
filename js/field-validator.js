@@ -14,12 +14,10 @@
 			validations = {},
 			$container,
 
-			// constants
+			// attribute names
 			names = {
 				// tooltips
 				tooltip_class: "error-input-tooltip",
-				tooltip_custom_class: "",
-				tooltip_message_attr: "data-tooltip-html",
 				tooltip_added_handler: "tooltip-added"
 			},
 
@@ -98,22 +96,28 @@
 		function handleElemErrors(elem, messages) {
 			if (messages.length) {
 				var message = "";
-				if (elem.attr(names.tooltip_message_attr)) {
-					message = elem.attr(names.tooltip_message_attr);
+
+				if (names.custom_message_attr && elem.attr(names.custom_message_attr)) {
+					message = elem.attr(names.custom_message_attr);
+
 				} else if (messages.length > 1) {
-					message = "<span>O campo " + elem.attr("data-field-label") + ":</span>";
-					message += "<ul><li>";
-					message += messages.join("</li><li>");
-					message += "</li></ul>";
+					message = "<span>O campo";
+					message += (elem.attr("data-field-label") ? " \"" + elem.attr("data-field-label") + "\"" : "");
+					message += "</span>";
+					message += "<ul><li>" + messages.join("</li><li>") + "</li></ul> ";
+
 				} else if (messages.length === 1) {
-					message = "<p>O campo " + elem.attr("data-field-label") + " " + messages[0] + "</p>";
+					message = "<span>O campo";
+					message += (elem.attr("data-field-label") ? " \"" + elem.attr("data-field-label") + "\"" : "");
+					message += " " + messages[0] + "</span>";
 				}
 
-				elem.attr(names.tooltip_message_attr, message)
+				elem.attr("data-tooltip-html", message)
 					.addClass("error-input-highlight")
 					.trigger(names.tooltip_added_handler + ".field-validator");
+
 			} else {
-				elem.attr(names.tooltip_message_attr, "")
+				elem.removeAttr("data-tooltip-html")
 					.removeClass("error-input-highlight")
 					.trigger("tooltip-removed.field-validator");
 			}
@@ -271,6 +275,8 @@
 			// initialize tooltip
 			if (options.tooltip) {
 				names.tooltip_class = options.tooltip.tooltip_class || names.tooltip_class;
+				names.custom_message_attr = options.tooltip.custom_message_attr || names.custom_message_attr;
+
 				$container.tooltip({
 					items: ".error-input-highlight",
 					tooltip_class: names.tooltip_class,
@@ -294,7 +300,9 @@
 			container: "body",
 			delegate_validations: true,
 			on_change: true,
-			tooltip: true,
+			tooltip: {
+				custom_message_attr: "data-custom-tooltip"
+			},
 			after_validation_callback: function () {
 				console.log("after_validation_callback");
 			}
