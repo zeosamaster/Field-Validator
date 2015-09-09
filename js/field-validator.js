@@ -295,20 +295,7 @@
 	/***************/
 
 	$(document).ready(function () {
-		var validator = new FieldValidator();
-		validator.setup({
-			container: "body",
-			delegate_validations: true,
-			on_change: true,
-			tooltip: {
-				custom_message_attr: "data-custom-tooltip"
-			},
-			after_validation_callback: function () {
-				console.log("after_validation_callback");
-			}
-		});
-
-		window.validator = validator;
+		window.validator = new FieldValidator();
 	});
 
 }());
