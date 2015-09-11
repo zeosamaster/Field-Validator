@@ -218,12 +218,12 @@
 					$valid = true;
 
 				if (!label) {
-					label = $('label[for=' + $elem.attr('id') + ']', $container).text() || "";
+					label = $('label[for=' + $elem.attr('id') + ']', $container).text() || $elem.prevAll('label').first().text() || "";
 					$elem.attr("data-field-label", label);
 				}
 
 				// add validation types from independent attributes
-				if (required) {
+				if (required !== undefined) {
 					types.push("required");
 				}
 				if (regex) {
@@ -273,7 +273,6 @@
 			$.getScript("js/validations-config.js", function (data) {
 				validations = window.validations;
 				delete window.validations;
-				alertify_message("Setup completed");
 			});
 
 			// remove handlers from previous container
@@ -285,7 +284,7 @@
 			}
 
 			// fill empty options with default
-			options = $.extend({}, setup_options, default_options);
+			options = $.extend(default_options, setup_options);
 
 			// set container
 			if (options.container) {
@@ -348,7 +347,9 @@
 			if (options.validate_on_change) {
 				$container.on("change.field-validator", '[data-field-validations]', function () {
 					validator.validate($(this));
-					$alertify.validation_errors_instance.dismiss();
+					if ($alertify.validation_errors_instance) {
+						$alertify.validation_errors_instance.dismiss();
+					}
 				});
 			}
 
@@ -367,6 +368,7 @@
 					},
 					position: options.tooltip.position
 				});
+				$('[role="log"]').remove();
 			}
 		};
 
@@ -378,7 +380,7 @@
 	/***************/
 
 	$(document).ready(function () {
-		window.validator = new FieldValidator();
+		$.FieldValidator = FieldValidator;
 	});
 
 }());
