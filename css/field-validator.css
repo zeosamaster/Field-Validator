@@ -1,3 +1,5 @@
+/* plugin css */
+
 .has-tooltip {
 	border: 2px red solid;
 }
@@ -6,6 +8,80 @@
 	text-align: left;
 }
 
-.row {
+/* positioning */
+
+.left {
+	float: left;
+}
+
+.right {
+	float: right;
+}
+
+/* containers */
+
+.btn-group {
 	margin-top: 10px;
+	width: 100%;
+}
+
+.section {
+	margin-top: 40px;
+}
+
+.example-container {
+	padding: 15px 5px;
+}
+
+.footer {
+	min-height: 300px;
+}
+
+/* examples */
+
+.example {
+	padding: 10px;
+	border: 1px solid lightgrey;
+}
+
+.example .test {
+	display: flex;
+	margin-top: 10px;
+}
+
+.example .test label {
+	width: 20%;
+}
+
+pre {
+	overflow: auto;
+	padding: 5px;
+	max-height: 60px;
+	background-color: #eee;
+	font-family: Consolas, Menlo, Monaco, Lucida Console, Liberation Mono, DejaVu Sans Mono, Bitstream Vera Sans Mono, Courier New, monospace, sans-serif;
+}
+
+.break {
+    word-wrap: break-word;
+    word-break: break-all;
+    white-space: pre-wrap;
+}
+
+/* columns */
+
+.one-column {
+	-webkit-column-count: 1;
+	max-width: 50%;
+}
+
+.two-columns {
+	-webkit-column-count: 2;
+}
+
+.three-columns {
+	-webkit-column-count: 3;
+}
+
+.columns > * {
+	-webkit-column-break-inside: avoid;
 }
