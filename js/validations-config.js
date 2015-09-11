@@ -22,7 +22,7 @@
 					regex = $elem.attr("data-field-regex"),
 					messages = [];
 
-				if (regex && !regex.test(value)) {
+				if (regex && !new RegExp(regex).test(value)) {
 					messages.push(this.message);
 				}
 				return messages;
