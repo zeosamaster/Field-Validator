@@ -8,6 +8,25 @@
 	text-align: left;
 }
 
+
+/* menu */
+
+@media (max-width: 768px) {
+	.navbar-brand {
+		margin-left: 15px;
+	}
+	.navbar-nav li {
+		padding: 0px 15px;
+	}
+	.navbar-nav li:not(:last-child) {
+		border-bottom: lightgrey 1px solid;
+	}
+	.navbar-toggle {
+		margin-right: 30px;
+	}
+}
+
+
 /* positioning */
 
 .left {
@@ -18,26 +37,45 @@
 	float: right;
 }
 
+
 /* containers */
+
+body {
+	overflow-y: scroll;
+}
 
 .btn-group {
 	margin-top: 10px;
 	width: 100%;
 }
 
-.section {
-	margin-top: 40px;
-}
-
 .example-container {
 	padding: 15px 5px;
+}
+
+.code-container {
+	margin: 15px auto;
 }
 
 .footer {
 	min-height: 300px;
 }
 
+
 /* examples */
+
+.menu {
+	margin-top: 20px;
+}
+
+.menu.fixed {
+	position: fixed;
+	z-index: 9999;
+	left: 0;
+	top: 0;
+	margin-top: 0px;
+	width: 100%;
+}
 
 .example {
 	padding: 10px;
@@ -49,9 +87,28 @@
 	margin-top: 10px;
 }
 
-.example .test label {
-	width: 20%;
+@media screen and (min-width: 512px) {
+	.example .test label {
+		width: 20%;
+	}
+	.example .test input {
+		max-width: 80%;
+	}
 }
+
+@media screen and (max-width: 512px) {
+	.example .test label {
+		display: none;
+	}
+	.example .test input {
+		width: 90%;
+		max-width: 90%;
+		margin: 0 5%;
+	}
+}
+
+
+/* generic */
 
 pre {
 	overflow: auto;
@@ -62,26 +119,33 @@ pre {
 }
 
 .break {
-    word-wrap: break-word;
-    word-break: break-all;
-    white-space: pre-wrap;
+	word-wrap: break-word;
+	word-break: break-all;
+	white-space: pre-wrap;
 }
+
+h3 {
+	margin-top: 0px;
+	margin-bottom: 0px;
+	padding-top: 20px;
+	padding-bottom: 10px;
+}
+
 
 /* columns */
 
-.one-column {
-	-webkit-column-count: 1;
-	max-width: 50%;
-}
-
-.two-columns {
-	-webkit-column-count: 2;
-}
-
-.three-columns {
-	-webkit-column-count: 3;
-}
-
-.columns > * {
-	-webkit-column-break-inside: avoid;
+@media screen and (min-width: 512px) {
+	.one-column {
+		-webkit-column-count: 1;
+		max-width: 100%;
+	}
+	.two-columns {
+		-webkit-column-count: 2;
+	}
+	.three-columns {
+		-webkit-column-count: 3;
+	}
+	.columns > * {
+		-webkit-column-break-inside: avoid;
+	}
 }
