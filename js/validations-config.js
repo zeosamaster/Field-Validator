@@ -16,7 +16,7 @@
 		},
 
 		regex: {
-			message: "contém caracteres inválidos<br/>Expressão de validação: #data-field-regex",
+			message: "contém caracteres inválidos - expressão de validação: #data-field-regex",
 			validation_function: function ($elem) {
 				var value = $elem.val(),
 					regex = $elem.attr("data-field-regex"),
