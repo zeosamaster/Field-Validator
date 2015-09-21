@@ -111,11 +111,14 @@ body {
 /* generic */
 
 pre {
-	overflow: auto;
 	padding: 5px;
-	max-height: 60px;
 	background-color: #eee;
 	font-family: Consolas, Menlo, Monaco, Lucida Console, Liberation Mono, DejaVu Sans Mono, Bitstream Vera Sans Mono, Courier New, monospace, sans-serif;
+}
+
+pre.scroll {
+	overflow: auto;
+	max-height: 60px;
 }
 
 .break {

@@ -60,7 +60,7 @@
 						<p>The input value must be an integer (engineering and positive/negative numbers accepted)</p>
 						<p>Spaces are not accepted</p>
 					</div>
-					<div class="test">
+					<div class="test types">
 						<input data-field-validations="integer" />
 					</div>
 				</div>
@@ -69,7 +69,7 @@
 					<div class="explanation">
 						<p>The input value only accepts characters from A to Z (uppercase and lowercase), digits from 0 to 9 and spaces</p>
 					</div>
-					<div class="test">
+					<div class="test types">
 						<input data-field-validations="text" />
 					</div>
 				</div>
@@ -78,7 +78,7 @@
 					<div class="explanation">
 						<p>The input value must have at least one uppercase character, one lowercase character and one digit</p>
 					</div>
-					<div class="test">
+					<div class="test types">
 						<input data-field-validations="password" />
 					</div>
 				</div>
@@ -87,7 +87,7 @@
 					<div class="explanation">
 						<p>The input value must match the following regular expression: <code class="break">/[a-z0-9!#$%&\'*+\/=?\^_`{|}~\-]+(?:\.[a-z0-9!#$%&\'*+\/=?\^_`{|}~\-]+)*@(?:[a-z0-9](?:[a-z0-9\-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9\-]*[a-z0-9])?/i</code></p>
 					</div>
-					<div class="test">
+					<div class="test types">
 						<input data-field-validations="email" />
 					</div>
 				</div>
@@ -98,7 +98,7 @@
 						<p>The decimal separator must be a dot</p>
 						<p>Spaces and thousands separators are not accepted</p>
 					</div>
-					<div class="test">
+					<div class="test types">
 						<input data-field-validations="decimal" />
 					</div>
 				</div>
@@ -114,7 +114,7 @@
 						<div class="explanation">
 							<p>The <b><code>required</code></b> attribute indicates the input must be filled</p>
 						</div>
-						<div class="test">
+						<div class="test types">
 							<input data-field-validations="required" />
 						</div>
 					</div>
@@ -122,7 +122,7 @@
 						<div class="explanation">
 							<p>The <code>validations="required"</code> attribute is optional in case there is a <code>required</code> attribute</p>
 						</div>
-						<div class="test">
+						<div class="test types">
 							<input data-field-validations data-field-required />
 						</div>
 					</div>
@@ -136,7 +136,7 @@
 							<p>The <b><code>min-length</code></b> attribute indicates the value's minimum length (inclusive)</p>
 							<p>The <b><code>max-length</code></b> attribute indicates the value's maximum length (inclusive)</p>
 						</div>
-						<div class="test">
+						<div class="test types">
 							<input data-field-validations="length" data-field-min-length="4" data-field-max-length="16" />
 						</div>
 					</div>
@@ -144,10 +144,10 @@
 						<div class="explanation">
 							<p>The <code>validations="length"</code> attribute is optional in case there is a <code>min-length</code> or <code>max-length</code> attribute</p>
 						</div>
-						<div class="test">
+						<div class="test types">
 							<input data-field-validations data-field-min-length="4" />
 						</div>
-						<div class="test">
+						<div class="test types">
 							<input data-field-validations data-field-max-length="16" />
 						</div>
 					</div>
@@ -160,7 +160,7 @@
 						<div class="explanation">
 							<p>The <b><code>regex</code></b> attribute indicates the regular expression that must be matched</p>
 						</div>
-						<div class="test">
+						<div class="test types">
 							<input data-field-validations="regex" data-field-regex="^[A-Z]{5}$" />
 						</div>
 					</div>
@@ -168,7 +168,7 @@
 						<div class="explanation">
 							<p>The <code>validations="regex"</code> attribute is optional in case there is a <code>regex</code> attribute</p>
 						</div>
-						<div class="test">
+						<div class="test types">
 							<input data-field-validations data-field-regex="^[0-9]{3}$" />
 						</div>
 					</div>
@@ -184,7 +184,7 @@
 						<div class="explanation">
 							<p>The input value must be an <code>integer</code>, is <code>required</code> and must <code>start with <i>1</i></code>, <code>followed by exactly 3 digits</code></p>
 						</div>
-						<div class="test">
+						<div class="test types">
 							<input data-field-validations="integer" data-field-required data-field-regex="^1[0-9]{3}$" />
 						</div>
 					</div>
@@ -192,7 +192,7 @@
 						<div class="explanation">
 							<p>The input value must be a valid <code>email</code>, is <code>required</code> and must have <code>at least 10 characters</code>, <code>ending with <i>.com</i></code></p>
 						</div>
-						<div class="test">
+						<div class="test types">
 							<input data-field-validations="email" data-field-required data-field-min-length="10" data-field-regex="\.com$" />
 						</div>
 					</div>
@@ -203,15 +203,21 @@
 
 	<div class="page options-page" page="#options" style="display:none">
 		<div class="section">
-			<h3>Built in Types</h3>
+			<h3>Options</h3>
 			<div class="example-section two-columns columns">
 				<div class="example">
-					<h4>Integer</h4>
+					<h4>Container</h4>
 					<div class="explanation">
-						<p>The input value must be an integer (engineering and positive/negative numbers accepted)</p>
-						<p>Spaces are not accepted</p>
+						<p>Sets the scope for the plugin setup</p>
+						<p><code>container</code> accepts a jQuery element <code>$('.selector')</code> or a jQuery selector <code>.selector</code></p>
+						<pre>
+var $validator = new $.FieldValidator();
+$validator.setup({
+	container: $('.selector')
+});
+						</pre>
 					</div>
-					<div class="test">
+					<div class="test options">
 						<input data-field-validations="integer" />
 					</div>
 				</div>
