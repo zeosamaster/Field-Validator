@@ -80,190 +80,205 @@
 	<div class="page options-page" page="#options" style="display:none">
 		<div class="section">
 
-			<h2>Field Validator Options</h2>
+			<div class="validator-options">
+				<h2>Field Validator Options</h2>
 
-			<div data-option="container">
-				<h4>Container</h4>
-				<p>Sets the scope for the plugin. Validations are run only on inputs within the container.</p>
-				<p>Default: <code>$('body')</code></p>
-				<div class="example-section two-columns columns">
-					<div class="example">
-						<p><code>container</code> accepts a jQuery element <code>$('.selector')</code></p>
-						<pre>
-							$validator.setup({
-								container: '.validation-container' // a jQuery selector
-							});
-						</pre>
-						<pre>
-							<div class="validation-container">
-								<input name="i1" /> validated
-							</div>
-							<input name="i2" /> not validated
-						</pre>
-					</div>
-					<div class="example">
-						<p>or a jQuery selector <code>.selector</code></p>
-						<pre>
-							$validator.setup({
-								container: $('div') // a jQuery element
-							});
-						</pre>
-						<pre>
-							<div>
-								<input name="i1" /> validated
-							</div>
-							<input name="i2" /> not validated
-							<div>
-								<span>
-									<input name="i2" /> validated
-								</span>
-							</div>
-						</pre>
-					</div>
-				</div>
-			</div>
-
-			<div data-option="delegate_validations">
-				<h4>Validation Delegation</h4>
-				<p>Indicates if parent validations should be inherited by descendant inputs</p>
-				<p>Value: <code>delegate_validations: boolean</code></p>
-				<p>Default: <code>delegate_validations: true</code></p>
-				<div class="example-section">
-				<div class="example">
-					<div class="explanation">
-						<p>If set to true, all validations in parent elements are inherited by its descendant inputs</p>
-						<br />
-						<pre>
-							<div data-field-validations="email">
-								<input name="i1" type="text"> validated as email
-								<div data-field-regex="[a-z]{5}">
-									<div>
-										<input data-field-validations="text" name="i2" type="text"> validated as text, email, also validating the regex
-									</div>
+				<div data-option="container">
+					<h4>Container</h4>
+					<p>Sets the scope for the plugin. Validations are run only on inputs within the container.</p>
+					<p>Default: <code>$('body')</code></p>
+					<div class="example-section two-columns columns">
+						<div class="example">
+							<p><code>container</code> accepts a jQuery element <code>$('.selector')</code></p>
+							<pre>
+								$validator.setup({
+									container: '.validation-container' // a jQuery selector
+								});
+							</pre>
+							<pre>
+								<div class="validation-container">
+									<input name="i1" /> validated
 								</div>
-							</div>
-							<input name="i3" type="text"> not validated
-						</pre>
-						<pre>
-							$validator.setup({
-								delegate_validations: true
-							});
-						</pre>
-					</div>
-				</div>
-				<div class="example">
-					<div class="explanation">
-						<p>If set to false, validations will not be inherited</p>
-						<br />
-						<pre>
-							<div data-field-validations="email">
-								<input name="i1" type="text"> not validated
+								<input name="i2" /> not validated
+							</pre>
+						</div>
+						<div class="example">
+							<p>or a jQuery selector <code>.selector</code></p>
+							<pre>
+								$validator.setup({
+									container: $('div') // a jQuery element
+								});
+							</pre>
+							<pre>
 								<div>
-									<input name="i2" type="text"> not validated
+									<input name="i1" /> validated
 								</div>
+								<input name="i2" /> not validated
+								<div>
+									<span>
+										<input name="i2" /> validated
+									</span>
+								</div>
+							</pre>
+						</div>
+					</div>
+				</div>
+
+				<div data-option="delegate_validations">
+					<h4>Validation Delegation</h4>
+					<p>Indicates if parent validations should be inherited by descendant inputs</p>
+					<p>Value: <code>delegate_validations: boolean</code></p>
+					<p>Default: <code>delegate_validations: true</code></p>
+					<div class="example-section">
+						<div class="example">
+							<div class="explanation">
+								<p>If set to true, all validations in parent elements are inherited by its descendant inputs</p>
+								<br />
+								<pre>
+									<div data-field-validations="email">
+										<input name="i1" type="text"> validated as email
+										<div data-field-regex="[a-z]{5}">
+											<div>
+												<input data-field-validations="text" name="i2" type="text"> validated as text, email, also validating the regex
+											</div>
+										</div>
+									</div>
+									<input name="i3" type="text"> not validated
+								</pre>
+								<pre>
+									$validator.setup({
+										delegate_validations: true
+									});
+								</pre>
 							</div>
-							<input name="i3" type="text"> not validated
-						</pre>
-						<pre>
-							$validator.setup({
-								delegate_validations: false
-							});
-						</pre>
+						</div>
+
+						<div class="example">
+							<div class="explanation">
+								<p>If set to false, validations will not be inherited</p>
+								<br />
+								<pre>
+									<div data-field-validations="email">
+										<input name="i1" type="text"> not validated
+										<div>
+											<input name="i2" type="text"> not validated
+										</div>
+									</div>
+									<input name="i3" type="text"> not validated
+								</pre>
+								<pre>
+									$validator.setup({
+										delegate_validations: false
+									});
+								</pre>
+							</div>
+						</div>
 					</div>
 				</div>
-			</div>
-			</div>
 
-			<div data-option="validate_on_change">
-				<h4>Validate on input change event</h4>
-				<p>Indicates if an input should be validated when it is changed</p>
-				<p>Only the changed input will be validated, not the whole page</p>
-				<p>Value: <code>validate_on_change: boolean</code></p>
-				<p>Default: <code>validate_on_change: true</code></p>
-				<div class="example-section two-columns columns">
-					<div class="example">
-						<p>Validations will run when the input is changed</p>
-						<pre>
-							$validator.setup({
-								validate_on_change: true
-							});
-						</pre>
-					</div>
-					<div class="example">
-						<p>Validations will not run when the input is changed</p>
-						<pre>
-							$validator.setup({
-								validate_on_change: false
-							});
-						</pre>
+				<div data-option="validate_on_change">
+					<h4>Validate on input change event</h4>
+					<p>Indicates if an input should be validated when it is changed</p>
+					<p>Only the changed input will be validated, not the whole page</p>
+					<p>Value: <code>validate_on_change: boolean</code></p>
+					<p>Default: <code>validate_on_change: true</code></p>
+					<div class="example-section two-columns columns">
+						<div class="example">
+							<p>Validations will run when the input is changed</p>
+							<pre>
+								$validator.setup({
+									validate_on_change: true
+								});
+							</pre>
+						</div>
+						<div class="example">
+							<p>Validations will not run when the input is changed</p>
+							<pre>
+								$validator.setup({
+									validate_on_change: false
+								});
+							</pre>
+						</div>
 					</div>
 				</div>
-			</div>
 
-			<div data-option="after_validation_callback">
-				<h4>Callback after validations</h4>
-				<p>The function to run after all validations are run</p>
-				<p>The function will receive a <code>boolean</code> indicating if all the validations were successful and an <code>array of jQuery elements</code> that were validated</p>
-				<p>Value: <code>after_validation_callback: function</code></p>
-				<p>Default: <code>after_validation_callback: undefined</code></p>
-				<div class="example-section">
-					<div class="example">
-						<p>The below function will indicate the validations output after they have finished</p>
-						<pre>
-							$validator.setup({
-								after_validation_callback: function(valid, elems){
-									if(valid) {
-										alert("Validations were successful on " + elems.length + " elements");
-									} else {
-										alert("Some inputs have invalid values");
+				<div data-option="after_validation_callback">
+					<h4>Callback after validations</h4>
+					<p>The function to run after all validations are run</p>
+					<p>The function will receive a <code>boolean</code> indicating if all the validations were successful and an <code>array of jQuery elements</code> that were validated</p>
+					<p>Value: <code>after_validation_callback: function</code></p>
+					<p>Default: <code>after_validation_callback: undefined</code></p>
+					<div class="example-section">
+						<div class="example">
+							<p>The below function will indicate the validations output after they have finished</p>
+							<pre>
+								$validator.setup({
+									after_validation_callback: function(valid, elems){
+										if(valid) {
+											alert("Validations were successful on " + elems.length + " elements");
+										} else {
+											alert("Some inputs have invalid values");
+										}
 									}
-								}
-							});
-						</pre>
+								});
+							</pre>
+						</div>
 					</div>
 				</div>
 			</div>
 
-			<h2 class="options-section">Tooltip Options</h2>
+			<div class="tooltip-options">
+				<h2 class="options-section">Tooltip Options</h2>
+				<p>Tooltip configuration options</p>
 
-			<div data-option="tooltip">
-				<h4>Tooltip</h4>
-				<p></p>
-				<p>Value: <code>: </code></p>
-				<p>Default: <code></code></p>
-				<div class="example-section two-columns columns">
-					<div class="example">
-						<p></p>
-						<pre>
-							$validator.setup({
-
-							});
-						</pre>
-						<pre>
-
-						</pre>
+				<div data-option="tooltip">
+					<h4></h4>
+					<p></p>
+					<p>Value: <code>: </code></p>
+					<p>Default: <code></code></p>
+					<div class="example-section two-columns columns">
+						<div class="example">
+							<p></p>
+							<pre>
+								$validator.setup({
+									tooltip_class: "",
+									custom_message_attr: "",
+									add_handler: undefined,
+									remove_handler: undefined,
+									position: {
+										my: "right-20px"
+									}
+								});
+							</pre>
+						</div>
 					</div>
 				</div>
 			</div>
 
-			<h2 class="options-section">Alertify Options</h2>
+			<div class="alertify-options">
+				<h2 class="options-section">Alertify Options</h2>
+				<p>Alertify configuration options</p>
 
-			<div data-option="alertify">
-				<h4></h4>
-				<p></p>
-				<p>Value: <code>: </code></p>
-				<p>Default: <code></code></p>
-				<div class="example-section two-columns columns">
-					<div class="example">
-						<p></p>
-						<pre>
-							$validator.setup({
-
-							});
-						</pre>
-						<pre>
-
-						</pre>
+				<div data-option="alertify">
+					<h4></h4>
+					<p></p>
+					<p>Value: <code>: </code></p>
+					<p>Default: <code></code></p>
+					<div class="example-section two-columns columns">
+						<div class="example">
+							<p></p>
+							<pre>
+								$validator.setup({
+									alertify: {
+										error_delay: 10,
+										warning_delay: 5,
+										max_messages: 5,
+										error_class: "alertify-error",
+										message_class: "alertify-message"
+									}
+								});
+							</pre>
+						</div>
 					</div>
 				</div>
 			</div>
