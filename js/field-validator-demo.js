@@ -1,8 +1,7 @@
 /*global $:false, console:false */
 (function () {
 	'use strict';
-	var
-		validateButton =
+	var validateButton =
 		$('<div class="btn-group"/>').append(
 			$('<div class="right"/>').append(
 				$('<button />', {
@@ -10,14 +9,13 @@
 					"text": "Validate"
 				})
 			)
-		),
+		);
 
-		getCodeContainer = function (code) {
-			return $('<div class="code-container" />').append(
-				$('<pre class="code" />').text(code)
-			);
-		};
-
+	function getCodeContainer(code) {
+		return $('<div class="code-container" />').append(
+			$('<pre class="code" />').text(code)
+		);
+	}
 
 	function insertCode(i, elem) {
 		var inputHtml = $(elem).prop('outerHTML');
@@ -28,7 +26,7 @@
 	}
 
 	function keepNavBar() {
-		if ($(window).scrollTop() > 20) {
+		if ($(window).scrollTop() > 50) {
 			$('.menu').addClass('fixed');
 		} else {
 			$('.menu').removeClass('fixed');
@@ -46,7 +44,6 @@
 		$btnContainer.find('.btn-validate').click($validator.fullValidate);
 		$(elem).append($btnContainer);
 
-		$(elem).wrap($('<div class="example-container" />'));
 	}
 
 	function slideElem(siblings, elem, offset) {
@@ -75,15 +72,32 @@
 		}
 	}
 
+	function indentPreTag(i, tag) {
+		var text = $(tag).html(),
+			surplus_spaces,
+			regex;
+
+		surplus_spaces = text.match(/^\s+/);
+		if (surplus_spaces) {
+			regex = new RegExp(surplus_spaces[0], "g");
+			text = text.replace(regex, "").replace(/\t/g, "    ");
+			$(tag).text(text);
+		}
+	}
+
 	$(document).ready(function () {
-		$('.example')
+		$('.examples-page .example')
 			.each(setupSingleExample)
 			.find('input').each(insertCode);
+
+		$('.example').wrap($('<div class="example-container" />'));
 
 		$('.menu').on('click.demo', '.slider', slideHandler);
 
 		slidePage(window.location.hash);
 
 		$(window).bind('scroll', keepNavBar);
+
+		$('pre').each(indentPreTag);
 	});
 }());

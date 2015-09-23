@@ -58,9 +58,17 @@ body {
 }
 
 .footer {
-	min-height: 300px;
+	min-height: 200px;
 }
 
+.options-section:before {
+	background: #ddd;
+	content: "";
+	display: block;
+	height: 1px;
+	margin: 40px 0px;
+	width: 100%;
+}
 
 /* examples */
 
@@ -140,7 +148,7 @@ h3 {
 @media screen and (min-width: 512px) {
 	.one-column {
 		-webkit-column-count: 1;
-		max-width: 100%;
+		max-width: 50%;
 	}
 	.two-columns {
 		-webkit-column-count: 2;
