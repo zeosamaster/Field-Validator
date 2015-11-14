@@ -241,12 +241,18 @@
 							<p></p>
 							<pre>
 								$validator.setup({
-									tooltip_class: "",
-									custom_message_attr: "",
-									add_handler: undefined,
-									remove_handler: undefined,
-									position: {
-										my: "right-20px"
+									tooltip: {
+										tooltip_class: "my-tooltip",
+										custom_message_attr: "my-custom-tooltip",
+										add_handler: function(elem, message){
+											alert("tooltip added");
+										},
+										remove_handler: function(elem, message){
+											alert("tooltip removed");
+										},
+										position: {
+											my: "right-20px"
+										}
 									}
 								});
 							</pre>

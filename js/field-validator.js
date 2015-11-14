@@ -155,13 +155,13 @@
 				}
 
 				elem.attr("data-tooltip-html", message)
-					.addClass("has-tooltip")
-					.trigger("tooltip-added.field-validator");
+					.addClass("has-tooltip");
+				options.tooltip.add_handler && options.tooltip.add_handler(elem, message);
 
 			} else {
 				elem.removeAttr("data-tooltip-html")
-					.removeClass("has-tooltip")
-					.trigger("tooltip-removed.field-validator");
+					.removeClass("has-tooltip");
+				options.tooltip.remove_handler && options.tooltip.remove_handler(elem, message);
 			}
 		}
 
