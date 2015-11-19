@@ -85,8 +85,9 @@
 
 				<div data-option="container">
 					<h4>Container</h4>
-					<p>Sets the scope for the plugin. Validations are run only on inputs within the container.</p>
-					<p>Default: <code>$('body')</code></p>
+					<p>Sets the scope for the plugin. Validations are executed only on inputs within the container.</p>
+					<p>Value: <code>container: [ jQuery element || jQuery selector ]</code></p>
+					<p>Default: <code>container: $('body')</code></p>
 					<div class="example-section two-columns columns">
 						<div class="example">
 							<p><code>container</code> accepts a jQuery element <code>$('.selector')</code></p>
@@ -184,7 +185,7 @@
 					<p>Default: <code>validate_on_change: true</code></p>
 					<div class="example-section two-columns columns">
 						<div class="example">
-							<p>Validations will run when the input is changed</p>
+							<p>Validations will be executed when the input is changed</p>
 							<pre>
 								$validator.setup({
 									validate_on_change: true
@@ -192,7 +193,7 @@
 							</pre>
 						</div>
 						<div class="example">
-							<p>Validations will not run when the input is changed</p>
+							<p>Validations will not be executed when the input is changed</p>
 							<pre>
 								$validator.setup({
 									validate_on_change: false
@@ -204,7 +205,7 @@
 
 				<div data-option="after_validation_callback">
 					<h4>Callback after validations</h4>
-					<p>The function to run after all validations are run</p>
+					<p>The function to be called after all validations are completed</p>
 					<p>The function will receive a <code>boolean</code> indicating if all the validations were successful and an <code>array of jQuery elements</code> that were validated</p>
 					<p>Value: <code>after_validation_callback: function</code></p>
 					<p>Default: <code>after_validation_callback: undefined</code></p>
@@ -225,6 +226,7 @@
 						</div>
 					</div>
 				</div>
+
 			</div>
 
 			<div class="tooltip-options">
@@ -232,24 +234,78 @@
 				<p>Tooltip configuration options</p>
 
 				<div data-option="tooltip">
-					<h4></h4>
-					<p></p>
-					<p>Value: <code>: </code></p>
-					<p>Default: <code></code></p>
 					<div class="example-section two-columns columns">
+
 						<div class="example">
-							<p></p>
+							<h4>Tooltip Class</h4>
+							<p>Class to be added to the tooltip element</p>
+							<p>Value: <code>tooltip_class: string</code></p>
+							<p>Default: <code>tooltip_class: ""</code></p>
 							<pre>
 								$validator.setup({
 									tooltip: {
-										tooltip_class: "my-tooltip",
-										custom_message_attr: "my-custom-tooltip",
+										tooltip_class: "my-tooltip"
+									}
+								});
+							</pre>
+						</div>
+
+						<div class="example">
+							<h4>Custom Message Attribute</h4>
+							<p>If an input element has an attribute with the same name of this property, the value of that attribute is used as the tooltip message, replacing the message created by the plugin, only for that input element</p>
+							<p>Value: <code>custom_message_attr: string</code></p>
+							<p>Default: <code>custom_message_attr: ""</code></p>
+							<pre>
+								$validator.setup({
+									tooltip: {
+										custom_message_attr: "my-custom-tooltip"
+									}
+								});
+							</pre>
+						</div>
+
+						<div class="example">
+							<h4>Add Handler</h4>
+							<p>Function to be executed after the tooltip is added</p>
+							<p>This function will be passed a <code>elem</code> variable containing the jQuery element that has a new tooltip and a <code>message</code> variable containing the message that was added to its tooltip</p>
+							<p>Value: <code>add_handler: function</code></p>
+							<p>Default: <code>add_handler: undefined</code></p>
+							<pre>
+								$validator.setup({
+									tooltip: {
 										add_handler: function(elem, message){
 											alert("tooltip added");
-										},
-										remove_handler: function(elem, message){
+										}
+									}
+								});
+							</pre>
+						</div>
+
+						<div class="example">
+							<h4>Remove Handler</h4>
+							<p>Function to be executed after the tooltip is removed</p>
+							<p>This function will be passed a <code>elem</code> variable containing the jQuery element whose tooltip was removed</p>
+							<p>Value: <code>remove_handler: function</code></p>
+							<p>Default: <code>remove_handler: undefined</code></p>
+							<pre>
+								$validator.setup({
+									tooltip: {
+										remove_handler: function(elem){
 											alert("tooltip removed");
-										},
+										}
+									}
+								});
+							</pre>
+						</div>
+
+						<div class="example">
+							<h4>Position</h4>
+							<p>Sets the position of the tooltip</p>
+							<p>Value: <code>position: [jQuery UI position object]</code> (<a href="https://jqueryui.com/position/" target="_blank">see here</a>)</p>
+							<p>Default: <code>position: { my: "right-20px" }</code></p>
+							<pre>
+								$validator.setup({
+									tooltip: {
 										position: {
 											my: "right-20px"
 										}
@@ -257,6 +313,7 @@
 								});
 							</pre>
 						</div>
+
 					</div>
 				</div>
 			</div>
@@ -266,25 +323,80 @@
 				<p>Alertify configuration options</p>
 
 				<div data-option="alertify">
-					<h4></h4>
-					<p></p>
-					<p>Value: <code>: </code></p>
-					<p>Default: <code></code></p>
 					<div class="example-section two-columns columns">
+
 						<div class="example">
-							<p></p>
+							<h4>Error Delay</h4>
+							<p>Time spent until the error alertify disappears (in seconds)</p>
+							<p>Value: <code>error_delay: int</code></p>
+							<p>Default: <code>error_delay: 10</code></p>
 							<pre>
 								$validator.setup({
 									alertify: {
-										error_delay: 10,
-										warning_delay: 5,
-										max_messages: 5,
-										error_class: "alertify-error",
+										error_delay: 10
+									}
+								});
+							</pre>
+						</div>
+
+						<div class="example">
+							<h4>Message Delay</h4>
+							<p>Time spent until the message alertify disappears (in seconds)</p>
+							<p>Value: <code>message_delay: int</code></p>
+							<p>Default: <code>message_delay: 5</code></p>
+							<pre>
+								$validator.setup({
+									alertify: {
+										message_delay: 5
+									}
+								});
+							</pre>
+						</div>
+
+						<div class="example">
+							<h4>Max Messages</h4>
+							<p>Maximum number of alertify elements to be displayed at once in the screen</p>
+							<p>If there are more alertify elements to display, an extra element will be added with suspension points</p>
+							<p>To display the rest of the elements, validated errors must be corrected</p>
+							<p>Value: <code>max_messages: int</code></p>
+							<p>Default: <code>max_messages: 5</code></p>
+							<pre>
+								$validator.setup({
+									alertify: {
+										max_messages: 5
+									}
+								});
+							</pre>
+						</div>
+
+						<div class="example">
+							<h4>Error Class</h4>
+							<p>Class to be added on error alertify elements</p>
+							<p>Value: <code>error_class: string</code></p>
+							<p>Default: <code>error_class: "alertify-error"</code></p>
+							<pre>
+								$validator.setup({
+									alertify: {
+										error_class: "alertify-error"
+									}
+								});
+							</pre>
+						</div>
+
+						<div class="example">
+							<h4>Message Class</h4>
+							<p>Class to be added on message alertify elements</p>
+							<p>Value: <code>message_class: string</code></p>
+							<p>Default: <code>message_class: "alertify-message"</code></p>
+							<pre>
+								$validator.setup({
+									alertify: {
 										message_class: "alertify-message"
 									}
 								});
 							</pre>
 						</div>
+
 					</div>
 				</div>
 			</div>

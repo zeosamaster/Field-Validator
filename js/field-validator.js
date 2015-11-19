@@ -32,7 +32,7 @@
 				},
 				alertify: {
 					error_delay: 10,
-					warning_delay: 5,
+					message_delay: 5,
 					max_messages: 5,
 					error_class: "alertify-error",
 					message_class: "alertify-message"
@@ -52,7 +52,7 @@
 		// alertify functions
 
 		function alertify_message(message, add_class, delay) {
-			delay = delay || options.alertify.warning_delay;
+			delay = delay || options.alertify.message_delay;
 			add_class = add_class || options.alertify.message_class;
 
 			var instance = $alertify.message(message, delay);
@@ -156,12 +156,16 @@
 
 				elem.attr("data-tooltip-html", message)
 					.addClass("has-tooltip");
-				options.tooltip.add_handler && options.tooltip.add_handler(elem, message);
+				if (options.tooltip && options.tooltip.add_handler) {
+					options.tooltip.add_handler(elem, message);
+				}
 
 			} else {
 				elem.removeAttr("data-tooltip-html")
 					.removeClass("has-tooltip");
-				options.tooltip.remove_handler && options.tooltip.remove_handler(elem, message);
+				if (options.tooltip && options.tooltip.remove_handler) {
+					options.tooltip.remove_handler(elem);
+				}
 			}
 		}
 

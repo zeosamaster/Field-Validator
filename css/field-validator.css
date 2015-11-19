@@ -160,3 +160,9 @@ h3 {
 		-webkit-column-break-inside: avoid;
 	}
 }
+
+.validator-options > [data-option] {
+	margin-top: 10px;
+	padding-top: 10px;
+	border-top: #ccc 1px solid;
+}
