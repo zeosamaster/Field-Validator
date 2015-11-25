@@ -1,4 +1,4 @@
-/*global $:false, console:false */
+/*global $:false */
 (function () {
 	'use strict';
 	var validateButton =

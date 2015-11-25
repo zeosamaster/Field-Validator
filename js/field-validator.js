@@ -1,4 +1,4 @@
-/*global alertify:false, $:false, console:false */
+/*global alertify:false, $:false */
 
 (function () {
 	'use strict';
