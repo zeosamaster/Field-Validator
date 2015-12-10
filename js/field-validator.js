@@ -22,7 +22,9 @@
 				validate_on_change: true,
 				after_validation_callback: undefined,
 				tooltip: {
-					tooltip_class: "",
+					tooltip_class: "has-tooltip",
+					custom_class: "",
+					validation_message_attr: "data-tooltip-html",
 					custom_message_attr: "",
 					add_handler: undefined,
 					remove_handler: undefined,
@@ -154,15 +156,15 @@
 					message += " " + messages[0] + "</span>";
 				}
 
-				elem.attr("data-tooltip-html", message)
-					.addClass("has-tooltip");
+				elem.attr(options.tooltip.validation_message_attr, message)
+					.addClass(options.tooltip.tooltip_class);
 				if (options.tooltip && options.tooltip.add_handler) {
 					options.tooltip.add_handler(elem, message);
 				}
 
 			} else {
-				elem.removeAttr("data-tooltip-html")
-					.removeClass("has-tooltip");
+				elem.removeAttr(options.tooltip.validation_message_attr)
+					.removeClass(options.tooltip.tooltip_class);
 				if (options.tooltip && options.tooltip.remove_handler) {
 					options.tooltip.remove_handler(elem);
 				}
@@ -374,11 +376,11 @@
 
 			// initialize tooltip
 			if (options.tooltip) {
-				$container.tooltip({
-					items: ".has-tooltip",
-					tooltip_class: options.tooltip.tooltip_class,
+				$container.uitooltip({
+					items: "." + options.tooltip.tooltip_class,
+					tooltip_class: options.tooltip.custom_class,
 					content: function () {
-						return $(this).attr(options.tooltip.custom_message_attr) || $(this).attr("data-tooltip-html");
+						return $(this).attr(options.tooltip.custom_message_attr) || $(this).attr(options.tooltip.validation_message_attr);
 					},
 					position: options.tooltip.position
 				});
