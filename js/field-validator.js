@@ -215,8 +215,12 @@
 					types = [],
 					required = $elem.attr("data-field-required"),
 					regex = $elem.attr("data-field-regex"),
-					min = $elem.attr("data-field-min-length"),
-					max = $elem.attr("data-field-max-length"),
+					min = $elem.attr("data-field-min"),
+					max = $elem.attr("data-field-max"),
+					min_date = $elem.attr("data-field-min-date"),
+					max_date = $elem.attr("data-field-max-date"),
+					min_length = $elem.attr("data-field-min-length"),
+					max_length = $elem.attr("data-field-max-length"),
 					html_types = getValidationTypes($elem),
 					messages = [],
 					$valid = true;
@@ -226,15 +230,21 @@
 					$elem.attr("data-field-label", label);
 				}
 
-				// add validation types from independent attributes
+				// add validation types based on validation attributes
 				if (required !== undefined) {
-					types.push("required");
+					html_types.push("required");
 				}
 				if (regex) {
-					types.push("regex");
+					html_types.push("regex");
 				}
 				if (min || max) {
-					types.push("length");
+					html_types.push("decimal");
+				}
+				if (min_length || max_length) {
+					html_types.push("length");
+				}
+				if (min_date || max_date) {
+					html_types.push("date");
 				}
 
 				html_types.forEach(function (type) {
@@ -246,7 +256,7 @@
 				// validate input according to its validation types
 				types.forEach(function (type) {
 					var type_messages = validations[type].validation_function($elem);
-					if (type_messages.length) {
+					if (type_messages) {
 						$valid = false;
 						messages = messages.concat(type_messages);
 					}

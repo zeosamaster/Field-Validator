@@ -456,6 +456,18 @@
 						<input data-field-validations="decimal" />
 					</div>
 				</div>
+				<div class="example">
+					<h4>Date</h4>
+					<div class="explanation">
+						<p>The input value must be a valid date according to the <code>data-field-date-format</code> attribute specified</p>
+						<p>If no <code>data-field-date-format</code> attribute is specified, the validation will always return success</p>
+						<p>This tag can accept any separator for the date, considering the first non-digit character to be the separator for the whole date</p>
+						<p>This tag must indicate the format in which years (y), months (m) and days (d) are to be accepted</p>
+					</div>
+					<div class="test types">
+						<input data-field-validations="date" data-field-date-format="dd-mm-yyyy" />
+					</div>
+				</div>
 			</div>
 		</div>
 

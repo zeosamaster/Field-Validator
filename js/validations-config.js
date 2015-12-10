@@ -1,6 +1,35 @@
 (function () {
 	'use strict';
 
+	function validDateFormat(format) {
+		return format && format.match(/^[mdy]+[\-\/][mdy]+[\-\/][mdy]+$/);
+	}
+
+	function parseDate(value, format) {
+		var date = {
+				d: "",
+				m: "",
+				y: ""
+			},
+			i;
+
+		for (i = 0; i < format.length; i = i + 1) {
+			if (date.hasOwnProperty(format[i])) {
+				date[format[i]] += value[i];
+			}
+		}
+
+		date.date = new Date(date.y, parseInt(date.m, 10) - 1, date.d);
+
+		if (isNaN(date.date.getTime()) || date.d > new Date(date.y, parseInt(date.m, 10), 0).getDate()) {
+			return {
+				not_a_date: true
+			};
+		}
+
+		return date;
+	}
+
 	var validations = {
 		required: {
 			message: "é de preenchimento obrigatório",
@@ -29,6 +58,35 @@
 			}
 		},
 
+		min: {
+			message: "deve ser igual ou superior a #data-field-min",
+			validation_function: function ($elem) {
+				var value = $elem.val(),
+					min = $elem.attr("data-field-min"),
+					messages = [];
+
+				if (min && (!value || parseFloat(value) < min)) {
+					messages.push(this.message);
+				}
+				return messages;
+			}
+		},
+
+		max: {
+			message: "deve ser igual ou inferior a #data-field-max",
+			validation_function: function ($elem) {
+				var value = $elem.val(),
+					max = $elem.attr("data-field-max"),
+					messages = [];
+
+				if (max && (!value || parseFloat(value) > max)) {
+					messages.push(this.message);
+				}
+				return messages;
+			}
+		},
+
+
 		min_length: {
 			message: "deve ter no mínimo #data-field-min-length caracteres",
 			validation_function: function ($elem) {
@@ -52,6 +110,54 @@
 
 				if (max_length && (!value || value.length > max_length)) {
 					messages.push(this.message);
+				}
+				return messages;
+			}
+		},
+
+		min_date: {
+			message: "deve conter uma data igual ou superior a #data-field-min-date",
+			validation_function: function ($elem) {
+				var value = $elem.val(),
+					min_date = $elem.attr("data-field-min-date"),
+					format = $elem.attr("data-field-date-format"),
+					date,
+					valid_date,
+					messages = [];
+
+				if (min_date) {
+					valid_date = validations.date.validation_function($elem);
+					if (valid_date) {
+						messages = messages.concat(valid_date);
+					}
+
+					if (value && min_date && validDateFormat(format)) {
+						date = parseDate(value, format);
+						min_date = parseDate(min_date, format);
+						if (!date || date.not_a_date || date.date < min_date.date) {
+							messages.push(this.message);
+						}
+					}
+				}
+				return messages;
+			}
+		},
+
+		max_date: {
+			message: "deve conter uma data igual ou inferior a #data-field-max-date",
+			validation_function: function ($elem) {
+				var value = $elem.val(),
+					max_date = $elem.attr("data-field-max-date"),
+					format = $elem.attr("data-field-date-format"),
+					date,
+					messages = [];
+
+				if (value && max_date && validDateFormat(format)) {
+					date = parseDate(value, format);
+					max_date = parseDate(max_date, format);
+					if (!date || date.not_a_date || date.date > max_date.date) {
+						messages.push(this.message);
+					}
 				}
 				return messages;
 			}
@@ -185,6 +291,33 @@
 				if (!/[a-z0-9!#$%&\'*+\/=?\^_`{|}~\-]+(?:\.[a-z0-9!#$%&\'*+\/=?\^_`{|}~\-]+)*@(?:[a-z0-9](?:[a-z0-9\-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9\-]*[a-z0-9])?/i.test(value)) {
 					messages.push(this.message);
 				}
+				return messages;
+			}
+		},
+
+		date: {
+			format_message: "deve conter uma data no formato #data-field-date-format",
+			separator_message: "deve conter uma data com o separador '#separator'",
+			validation_function: function ($elem) {
+				var value = $elem.val(),
+					format = $elem.attr("data-field-date-format").toLowerCase(),
+					separator = format.replace(/[dmy]/g, "")[0],
+					i,
+					date,
+					messages = [];
+
+				if (validDateFormat(format)) {
+					date = parseDate(value, format);
+
+					if (!date || date.not_a_date || date.m < 1 || date.m > 12 || date.d < 1) {
+						messages.push(this.format_message);
+					}
+
+					if (value.replace(/\d/g, "").replace(new RegExp(separator, "g"), "").length > 0) {
+						messages.push(this.separator_message.replace("#separator", separator));
+					}
+				}
+
 				return messages;
 			}
 		},
